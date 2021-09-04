@@ -38,6 +38,7 @@ function updateFilters() {
     // 4c. Save the id of the filter that was changed as a variable.
     let id = element.attr("id");
   
+    //console.log(`value: ${value}, id: ${id}`);
     // 5. If a filter value was entered then add that filterId and value
     // to the filters list. Otherwise, clear that filter from the filters object.
     if(value){
@@ -61,15 +62,23 @@ function updateFilters() {
 
     // 9. Loop through all of the filters and keep any data that
     // matches the filter values
-    if (filters) {
-        filteredData = filteredData.filter(row => 
-          row.datetime === filters[date]
-          & row.city === filters[city]
-          & row.state === filters[state] 
-          & row.country === filters[country] 
-          & row.shape === filters[shape] );
-    };
-  
+
+    //This array stores all the filters being entered by the user to perform filtering
+    filter_keys = Object.keys(filters);
+    
+    //For each filter key input by user. 
+    //Note: if column filters increase it would adjust dinamycally
+      filter_keys.forEach((key)=>{
+        //Start filtering data iterating row by row
+        filteredData = filteredData.filter(row => {
+        //if the row key value matches the filter value criteria return the row
+          if(row[key] === filters[key]){
+            return row
+          //console.log(`key:${key}, row_val:${row[key]}, filter_val:${filters[key]}`);
+        }
+        });
+      });
+
     // 10. Finally, rebuild the table using the filtered data
     buildTable(filteredData);
   }
